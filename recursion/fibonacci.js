@@ -8,3 +8,15 @@ output   0 1 1 2 3 5 8 13 21 34 ...
 
 What is the time complexity? Can you think of optimizing your solution? (Hint: look up dynamic programming)
 */
+// 5
+function optimizedFibonachi(n) {
+    const cache = {}
+}
+function Fibonnaci(n) {
+    if (n <2) {
+        return 1
+    }
+    return Fibonnaci(n-1) + Fibonnaci(n-2)
+}
+
+console.log(Fibonnaci(2))

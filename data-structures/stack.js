@@ -52,15 +52,27 @@ What's the time complexity?
 
 function Stack(capacity) {
   // implement me...
+  this.capacity = {}
 }
 
 Stack.prototype.push = function(value) {
   // implement me...
+  let lenght = 0;
+  for (key in this.capacity){
+    lenght++
+  }
+  return this.capacity[lenght+1] = value
 };
 // Time complexity:
 
 Stack.prototype.pop = function() {
   // implement me...
+  let lenght = 0;
+  for (key in this.capacity){
+    lenght++
+  }
+  const deleteStack = delete this.capacity[lenght]
+  return this.capacity
 };
 // Time complexity:
 
@@ -71,6 +83,11 @@ Stack.prototype.peek = function() {
 
 Stack.prototype.count = function() {
   // implement me...
+  let lenght = 0;
+  for (key in this.capacity){
+    lenght++
+  }
+  return lenght
 };
 // Time complexity:
 

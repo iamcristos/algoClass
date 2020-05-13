@@ -12,3 +12,20 @@ Write a function that takes a sorted array and a value and returns the index of 
 Extra credit: Implement the function both iteratively and recursively.
 
 */
+function BinarySearch(arr,x) {
+    const mid = Math.floor(arr.length/2);
+    if( x < arr[mid]) {
+        for(let i=0; i< mid; i++) {
+            if(arr[i] === x) return i
+        }
+    } else {
+        for(let i = mid; i<arr.length; i++) {
+            if (arr[i] === x) return i
+        }
+    }
+    return null
+};
+
+
+
+console.log(BinarySearch([1,2,3,4,5], 5))

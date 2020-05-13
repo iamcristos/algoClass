@@ -52,28 +52,52 @@ What's the time complexity?
 
 function Queue(capacity) {
   // implement me...
+  this.capacity = {}
+  this.head = 0
+  this.tail = 0
 }
 
 Queue.prototype.enqueue = function(value) {
   // implement me...
+  // let length= 0;
+  // for (key in this.capacity) {
+  //   length++
+  // }
+  // return this.capacity[length + 1] = value
+  if(!Object.keys(this.capacity).length) {
+    this.capacity[this.head] = value
+  }else {
+    this.tail = this.tail + 1
+    this.capacity[this.tail] = value
+  }
+  return this.tail;
 };
 // Time complexity:
 
-Queue.prototype.dequeue = function() {
+Queue.prototype.dequeue = async function() {
   // implement me...
+  await delete this.capacity[this.head]
+  if(this.head < this.tail) {
+    this.head = this.head + 1
+  }
+  return this.capacity
 };
 // Time complexity:
 
 Queue.prototype.peek = function() {
   // implement me...
+  return this.capacity[this.head]
 };
 
 Queue.prototype.count = function() {
   // implement me...
+  let length= 0;
+  for (key in this.capacity) {
+    length++
+  }
+  return length
 };
 // Time complexity:
-
-
 
 /*
 *** Exercises:

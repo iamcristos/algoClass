@@ -59,28 +59,137 @@ function BinarySearchTree (value) {
 
 BinarySearchTree.prototype.insert = function(value) {
   // implement me...
+  // check if the value is greater than the root
+    // if it is then move right and if right is null then insert
+  if(this.value < value) {
+    if(!this.right) {
+        const newTree = new BinarySearchTree(value)
+       this.right = newTree
+       return this
+      //  return newTree
+    }else{
+        return this.right.insert(value)
+    }
+  }else {
+    if(!this.left) {
+      const newTree = new BinarySearchTree(value)
+      this.left = newTree
+      return this
+      // return newTree
+    }
+    else {
+      return this.left.insert(value)
+    }
+  }
+
 };
 // Time complexity:
 
 BinarySearchTree.prototype.contains = function(value) {
   // implement me...
+  if(this.value === value) return true;
+    if(this.value < value && this.right) {
+      return this.right.contains(value)
+    }else if(this.value > value && this.left) {
+      return this.left.contains(value)
+    }
+  return false
 };
 // Time complexity:
 
 BinarySearchTree.prototype.traverseDepthFirst_inOrder = function(fn) {
   // implement me...
+  if(this.left) {
+    this.left.traverseDepthFirst_inOrder(fn)
+  }
+  fn(this.value)
+  if(this.right) {
+    this.right.traverseDepthFirst_inOrder(fn)
+  }
+  return
 };
 // Time complexity:
 
 BinarySearchTree.prototype.traverseDepthFirst_preOrder = function(fn) {
   // implement me...
+  fn(this.value)
+  if(this.left) {
+    this.left.traverseDepthFirst_preOrder(fn)
+  }
+  if(this.right) {
+    this.right.traverseDepthFirst_preOrder(fn)
+  }
+  return
 };
 // Time complexity:
 
 BinarySearchTree.prototype.traverseDepthFirst_postOrder = function(fn) {
   // implement me...
+  if(this.left) {
+    this.left.traverseDepthFirst_postOrder(fn)
+  }
+  if(this.right) {
+    this.right.traverseDepthFirst_postOrder(fn)
+  }
+  fn(this.value)
+  return
 };
 // Time complexity:
+
+BinarySearchTree.prototype.minDelete = function() {
+  let parentNode = this;
+  if(!this.left && this.right) {
+    this.value = this.right.value
+    const right = this.right
+    this.right = right.right ? right.right : null
+    this.left = right.left ? right.left : null
+    return
+  }
+  
+  if(this.left && this.left.left) {
+      return this.left.minDelete()
+  }
+  if(this.left && !!this.left.right) {
+    this.left = this.left.right
+    return
+  }
+  console.log(this.left, parentNode)
+  this.left = null
+  // console.log(this.left, parentNode)
+  return 
+};
+
+BinarySearchTree.prototype.deleteNode = function(value) {
+  if(this.value === value) {
+    if(!!this.left && !!this.right) {
+      // traverse through the right and get the minimun
+      let minNode = this.right.left;
+      while(minNode.left) {
+        minNode = minNode.left
+      }
+      this.value = minNode.value
+      return
+    } else if(!!this.left && !!this.left.right) {
+        this.value = this.left.right.value
+        return
+    }else if(!!this.right && !!this.right.left) {
+      this.value = this.right.left.value
+      return
+    }else if(!!this.left) {
+      this.value = this.left.value
+    }else if(!!this.right) {
+      this.value = this.right.value
+    }
+  }else {
+    if(this.value > value) {
+      return this.left.deleteNode(value)
+    } else if(this.value < value) {
+      return this.right.deleteNode(value)
+    }
+  }
+  console.log('not found')
+  return
+}
 
 
 BinarySearchTree.prototype.checkIfFull = function() {
@@ -92,3 +201,24 @@ BinarySearchTree.prototype.checkIfBalanced = function() {
   // implement me...
 };
 // Time complexity:
+
+
+const tree1 = new BinarySearchTree(10)
+tree1.insert(5)
+tree1.insert(2)
+tree1.insert(20)
+tree1.insert(12)
+// tree1.insert(10)
+tree1.insert(4)
+tree1.insert(1)
+
+// console.log(tree1)
+// console.log(tree1.contains(12))
+console.log(tree1.traverseDepthFirst_inOrder(console.log))
+// console.log(tree1.traverseDepthFirst_preOrder(console.log))
+// console.log(tree1.traverseDepthFirst_postOrder(console.log))
+
+console.log(tree1.minDelete(),tree1.minDelete(),tree1.minDelete(), tree1.minDelete(), tree1.minDelete(),tree1.minDelete(),
+tree1.minDelete(), tree1.minDelete(), tree1.minDelete(), tree1.minDelete(), tree1.minDelete()
+)
+

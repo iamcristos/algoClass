@@ -93,6 +93,9 @@ function Graph () {
 
 Graph.prototype.addNode = function(value) {
   // implement me...
+  if(!value) return 'invalid value'
+  this._nodes[value] = this._nodes[value] || []
+  return this;
 };
 // Time complexity:
 
@@ -103,11 +106,18 @@ Graph.prototype.removeNode = function(value) {
 
 Graph.prototype.contains = function(value) {
   // implement me...
+  if(this._nodes[value]) return true
+  return false
 };
 // Time complexity:
 
 Graph.prototype.addEdge = function(value1, value2) {
   // implement me...
+  if(!this._nodes[value1] || !this._nodes[value2]) return 'invalid value type'
+  if(this._nodes[value1]) {
+    this._nodes[value1].push(value2)
+  }
+  return this
 };
 // Time complexity:
 
@@ -118,16 +128,33 @@ Graph.prototype.removeEdge = function(value1, value2) {
 
 Graph.prototype.hasEdge = function(value1, value2) {
   // implement me...
+  if(this._nodes[value1]) {
+    return this._nodes[value1].contains(value2)
+  }
 };
 // Time complexity:
 
 Graph.prototype.forEach = function(fn) {
   // implement me...
+  for (const key in this._nodes) {
+   if(this._nodes[key]) {
+     this._nodes[key].forEach(item => fn(item))
+   }
+  }
 };
 // Time complexity:
 
 Graph.prototype.traverseDepthFirst = function(value, fn, visited, distance) {
   // implement me...
+  if(this._nodes[value]) {
+    for(let i=0; i< this._nodes[value]; i++) {
+      if(!visited.includes(this._nodes[value][i])) {
+        visited.push(this._nodes[value][i]);
+        fn(this._nodes[value][i])
+        return this.traverseDepthFirst(this._nodes[value][i], fn ,visited)
+      }
+    }
+  }
 };
 // Time complexity:
 

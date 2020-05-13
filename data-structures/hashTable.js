@@ -67,8 +67,17 @@ function simpleHash(str, tableSize) {
 }
 // source: http://pmav.eu/stuff/javascript-hashing-functions/source.html
 
-function HashTable(/* ??? */) {
+function LinkedList(key, value) {
+  this.value = value
+  this.key = key
+  this.next = null
+}
+function HashTable( size) {
   // implement me...
+  this._size = size
+    this.storage = new Array(size)
+    this.hash = (str) => simpleHash(str, size)
+    this.count = 0;
 }
 
 // This is a helper method that you may want to implement to help keep your code DRY
@@ -76,6 +85,16 @@ function HashTable(/* ??? */) {
 // I recommend skipping it and coming back if you find that it will be useful
 HashTable.prototype.find = function(key) {
   // implement me...
+  const hash = simpleHash(key, this._size);
+  this.storage[hash] = this.storage[hash] || [];
+  const bucket = this.storage[hash];
+  let match, matchIndex;
+  bucket.forEach((item, index) =>{
+    if(item.hasOwnProperty(key)) {
+      match = item;
+      matchIndex= index
+    }
+  })
   return {
     match: match,
     bucket: bucket,
@@ -85,11 +104,27 @@ HashTable.prototype.find = function(key) {
 
 HashTable.prototype.set = function(key, value) {
   // implement me...
+  const match = this.find(key).match 
+  const bucket = this.find(key).bucket
+  if(match) {
+    match[key] = value
+  } else {
+    const newItem = {};
+    newItem[key] = value;
+    this.count++;
+    bucket.push(newItem);
+    if(this.count > 0.75*this._size) {
+      this.resize(2*this._size);
+    }
+  }
+  return this;
 };
 // Time complexity:
 
 HashTable.prototype.get = function(key) {
   // implement me...
+  const {match} = this.find(key)
+  return match ? match[key] : 'not found'
 };
 // Time complexity:
 
@@ -100,6 +135,10 @@ HashTable.prototype.has = function(key) {
 
 HashTable.prototype.delete = function(key) {
   // implement me...
+  const {match} = this.find(key);
+  if(match) {
+    delete match.key
+  }
 };
 // Time complexity:
 
@@ -111,6 +150,20 @@ HashTable.prototype.count = function() {
 HashTable.prototype.forEach = function(callback) {
   // implement me...
 };
+
+HashTable.prototype.resize = function(newSize) {
+  const oldStorage = this.storage;
+  this._size = newSize;
+  this.count = 0
+  this.storage = [];
+  oldStorage.forEach((bucket) =>{
+    bucket.forEach((item) =>{
+      const key = Object.keys(item)[0]
+      this.set(key, item[key])
+    })
+  })
+  return
+}
 // Time complexity:
 
 
@@ -125,3 +178,10 @@ HashTable.prototype.forEach = function(callback) {
 3. Implement a hash table using linked lists for collision-handling. Why might this be preferable to using arrays.
 
 */
+
+
+const a = new Array(10)
+a[11] = 5
+console.log(a[1], a[11])
+
+console.log(simpleHash('abc', 10))
